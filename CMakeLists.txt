@@ -22,10 +22,12 @@ TARGET_LINK_LIBRARIES(quartet PRIVATE m)
 
 ADD_EXECUTABLE(quartet_bin src/main.cpp)
 TARGET_LINK_LIBRARIES(quartet_bin PRIVATE quartet)
+SET_TARGET_PROPERTIES(quartet_bin PROPERTIES OUTPUT_NAME quartet)
 
-INSTALL(TARGETS quartet
+INSTALL(TARGETS quartet quartet_bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
     )
 INSTALL(FILES
     src/array3.h
