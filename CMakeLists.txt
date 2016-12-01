@@ -22,3 +22,25 @@ TARGET_LINK_LIBRARIES(quartet PRIVATE m)
 
 ADD_EXECUTABLE(quartet_bin src/main.cpp)
 TARGET_LINK_LIBRARIES(quartet_bin PRIVATE quartet)
+
+INSTALL(TARGETS quartet
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    )
+INSTALL(FILES
+    src/array3.h
+    src/feature.h
+    src/geometry_queries.h
+    src/gluvi.h
+    src/make_signed_distance.h
+    src/make_tet_mesh.h
+    src/match_features.h
+    src/optimize_tet_mesh.h
+    src/read_obj.h
+    src/sdf.h
+    src/tet_mesh.h
+    src/tet_quality.h
+    src/trimesh.h
+    src/util.h
+    src/vec.h
+    DESTINATION include/quartet)
