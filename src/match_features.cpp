@@ -39,7 +39,7 @@ bool inverts_incident_tets(int vIndex,
                 std::map<int,Vec3f>::const_iterator m = movedVertices.find(v);
                 if (m != movedVertices.end())
                 {
-                    tet[u] == m->second;
+                    tet[u] = m->second;
                 }
             }
         }
