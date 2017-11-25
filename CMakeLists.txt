@@ -17,8 +17,11 @@ SET(SRC_FILES src/predicates.cpp
               src/make_signed_distance.cpp
               src/make_tet_mesh.cpp)
 
-ADD_LIBRARY(quartet ${SRC_FILES})
+ADD_LIBRARY(quartet STATIC ${SRC_FILES})
 TARGET_LINK_LIBRARIES(quartet PRIVATE m)
+if(UNIX)
+    target_compile_options(quartet PRIVATE -fPIC -fvisibility=hidden)
+endif(UNIX)
 
 ADD_EXECUTABLE(quartet_bin src/main.cpp)
 TARGET_LINK_LIBRARIES(quartet_bin PRIVATE quartet)
