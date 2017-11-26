@@ -113,6 +113,7 @@
 /*                                                                           */
 /*****************************************************************************/
 
+#pragma GCC visibility push(hidden)
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -4192,3 +4193,4 @@ REAL insphere(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe)
 
   return insphereadapt(pa, pb, pc, pd, pe, permanent);
 }
+#pragma GCC visibility pop

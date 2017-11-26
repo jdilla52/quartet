@@ -1,9 +1,11 @@
 #include <cfloat>
 #include "geometry_queries.h"
 
+#pragma GCC visibility push(hidden)
 // External functions defined in predicates.cpp
 extern double exactinit();
 extern double orient3d(double* pa, double* pb, double* pc, double* pd);
+#pragma GCC visibility pop
 
 
 double
