@@ -673,11 +673,11 @@ match_features(TetMesh& mesh,
             vertexFeatureMap[v] = curr;
         }
 
-        // DEBUGGING
-        std::vector<Vec3f> objVerts;
-        std::vector<Vec3i> objTris;
-        mesh.getBoundary(objVerts, objTris);
-        write_objfile(objVerts, objTris, "45_feature_matching.obj");
+        //// DEBUGGING
+        //std::vector<Vec3f> objVerts;
+        //std::vector<Vec3i> objTris;
+        //mesh.getBoundary(objVerts, objTris);
+        //write_objfile(objVerts, objTris, "45_feature_matching.obj");
 
         // Now that we've snapped vertices to features, we need to re-find
         // any paths that used the vertices that are now spoken for.
