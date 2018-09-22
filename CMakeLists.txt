@@ -18,9 +18,9 @@ SET(SRC_FILES src/predicates.cpp
               src/make_tet_mesh.cpp)
 
 ADD_LIBRARY(quartet ${SRC_FILES})
-TARGET_LINK_LIBRARIES(quartet PRIVATE m)
 if(UNIX)
-    target_compile_options(quartet PRIVATE -fPIC)
+    TARGET_COMPILE_OPTIONS(quartet PRIVATE -fPIC)
+    TARGET_LINK_LIBRARIES(quartet PRIVATE m)
 endif(UNIX)
 
 ADD_EXECUTABLE(quartet_bin src/main.cpp)
