@@ -23,8 +23,52 @@ if(UNIX)
     TARGET_LINK_LIBRARIES(quartet PRIVATE m)
 endif(UNIX)
 
+# build option
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "-O1 -Wall")
+set(CMAKE_CXX_FLAGS_DEBUG "-g3 -O0 -DDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -DDELEASE")
+set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -Og -DNDEBUG")
+message("Build type: " ${CMAKE_BUILD_TYPE})
+
+# build path
+message("Current directory: " ${CMAKE_CURRENT_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
+
+# option
+option(BUILD_AS_SHARED "whether to build as shared lib" OFF)
+
+# tbb
+find_library(TBB_LIBRARY tbb HINTS /usr/local/homebrew/Cellar/tbb@2020/2020_U3/lib)
+
+# openexr
+find_library(HALF_LIB half HINTS /usr/local/homebrew/lib)
+
+# openvdb
+#list(APPEND SAMPLE_INCLUDE_DIR /usr/local/homebrew/Cellar)
+find_library(OpenVDB_LIBRARY openvdb HINTS /usr/local/homebrew/Cellar/openvdb/8.1.0/lib/libopenvdb.a)
+
+include_directories(/usr/local/homebrew/include)
+include_directories(/usr/local/homebrew/Cellar/tbb@2020/2020_U3/include)
+set(CMAKE_OSX_ARCHITECTURES x86_64)
+
+add_executable(sample openvdb/main.cpp)
+target_link_libraries(
+        sample
+        ${TBB_LIBRARY}
+        ${OpenVDB_LIBRARY}
+)
+
 ADD_EXECUTABLE(quartet_bin src/main.cpp)
-TARGET_LINK_LIBRARIES(quartet_bin PRIVATE quartet)
+TARGET_LINK_LIBRARIES(quartet_bin PRIVATE
+        quartet
+        ${OpenVDB_LIBRARY}
+        openvdb
+        ${Boost_LIBRARIES}
+        )
 SET_TARGET_PROPERTIES(quartet_bin PROPERTIES OUTPUT_NAME quartet)
 
 INSTALL(TARGETS quartet quartet_bin

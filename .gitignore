@@ -1,2 +1,8 @@
 *.o
 build/
+
+output/
+
+cmake-build-debug/
+
+.idea/
