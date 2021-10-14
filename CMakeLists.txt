@@ -62,7 +62,7 @@ target_link_libraries(
         ${OpenVDB_LIBRARY}
 )
 
-ADD_EXECUTABLE(quartet_bin src/main.cpp)
+ADD_EXECUTABLE(quartet_bin cli/main.cpp)
 TARGET_LINK_LIBRARIES(quartet_bin PRIVATE
         quartet
         ${OpenVDB_LIBRARY}
