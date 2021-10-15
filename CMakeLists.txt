@@ -1,4 +1,12 @@
 cmake_minimum_required(VERSION 2.6)
+# build option
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "-O1 -Wall")
+set(CMAKE_CXX_FLAGS_DEBUG "-g3 -O0 -DDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -DDELEASE")
+set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -Og -DNDEBUG")
+message("Build type: " ${CMAKE_BUILD_TYPE})
 
 project(Quartet)
 

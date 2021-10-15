@@ -392,22 +392,6 @@ max_dihedral_angle(const TetMesh& mesh)
 	return maxAngle * 180.0f / M_PI;
 }
 
-
-void
-make_tet_mesh(TetMesh& mesh,
-              const SDF& sdf,
-              bool optimize,
-              bool intermediate,
-              bool unsafe)
-{
-    // Create empty placeholder for unused FeatureSet.
-    FeatureSet features;
-
-    // Forward function call
-    make_tet_mesh(mesh, sdf, features, optimize, intermediate, unsafe);
-}
-
-
 void
 make_tet_mesh(TetMesh& mesh,
               const SDF& sdf,
@@ -483,7 +467,7 @@ make_tet_mesh(TetMesh& mesh,
     }
 
     // Compute maximum dihedral angle of mesh (unoptimized, no features).
-    std::cout << "  Maximum dihedral angle = " << max_dihedral_angle(mesh) 
+    std::cout << "  Maximum dihedral angle = " << max_dihedral_angle(mesh)
         << std::endl;
 
     if (featureSet.numFeatures() > 0 || optimize)
@@ -494,7 +478,7 @@ make_tet_mesh(TetMesh& mesh,
         std::cout << "  identifying boundary" << std::endl;
         mesh.getBoundary(boundary_verts, boundary_tris);
         assert(!boundary_verts.empty());
-        
+
         // Snap vertices to given features
         std::vector<int> feature_endpoints;
         std::map<int, int> vertex_feature_map;
@@ -510,9 +494,9 @@ make_tet_mesh(TetMesh& mesh,
                            unsafe);
 
             featureTime = clock() - featureTime;
-        
-            std::cout << "  features matched in " 
-                      << ((float)featureTime)/CLOCKS_PER_SEC 
+
+            std::cout << "  features matched in "
+                      << ((float)featureTime)/CLOCKS_PER_SEC
                       << " seconds." << std::endl;
             std::cout << "  Maximum dihedral angle = "
                       << max_dihedral_angle(mesh) << std::endl;
@@ -523,25 +507,25 @@ make_tet_mesh(TetMesh& mesh,
                 static const char* matchFeaturesInfo = "5_match_features.info";
                 mesh.writeToFile(matchFeaturesFile);
                 mesh.writeInfoToFile(matchFeaturesInfo);
-                std::cout << "Mesh written to " << matchFeaturesFile 
+                std::cout << "Mesh written to " << matchFeaturesFile
                           << std::endl;
             }
-        } 
+        }
 
         // Finish by optimizing the tetmesh, if desired.
-        if (optimize) 
+        if (optimize)
         {
             std::cout << "  optimizing mesh" << std::endl;
             clock_t optTime = clock();
 
-            optimize_tet_mesh(mesh, sdf, 
-                              boundary_verts, 
+            optimize_tet_mesh(mesh, sdf,
+                              boundary_verts,
                               featureSet,
                               feature_endpoints,
                               vertex_feature_map);
 
             optTime = clock() - optTime;
-            std::cout << "  Mesh optimization completed in " 
+            std::cout << "  Mesh optimization completed in "
                       << ((float)optTime)/CLOCKS_PER_SEC
                       << " seconds." << std::endl;
             std::cout<< "  Maximum dihedral angle = "
