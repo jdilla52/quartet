@@ -261,37 +261,6 @@ main(int argc,
         std::printf("ERROR: Failed to write mesh info to file.\n");
     }
     
-    // Write out a Matlab file containing the dihedral angles of the mesh.
-    std::vector<float> dihedralAngles;
-    dihedralAngles.reserve(mesh.tSize()*6);
-    for (size_t tIdx = 0; tIdx < mesh.tSize(); ++tIdx)
-    {
-        Tet currTet = mesh.getTet(tIdx);
-        std::vector<float> currAngles;
-        currTet.dihedralAngles(currAngles);
-        for (size_t i = 0; i < currAngles.size(); ++i)
-        {
-            dihedralAngles.push_back(currAngles[i] * 180.0 / M_PI);
-        }
-    }
-    std::stringstream ss2;
-    ss2 << filenameStr << "_hist.m";
-    std::ofstream out(ss2.str().c_str());
-    if (out.good())
-    {   
-        std::printf("Writing histogram to file: %s\n", ss2.str().c_str());
-        out << "histValues = [ ";
-        for (size_t i = 0; i < dihedralAngles.size(); ++i)
-        {
-            out << dihedralAngles[i] << " ";
-        }
-        out << "];" << std::endl;
-    }
-    else
-    {
-        std::printf("Failed to write histogram file: %s\n", ss2.str().c_str());
-    }
-
     // Write out the exterior as a trimesh, if desired.
     if (surface)
     {

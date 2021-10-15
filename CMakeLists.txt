@@ -54,3 +54,14 @@ target_link_libraries(quartet_bin
         ${TBB_LIBRARY}
         ${OpenVDB_LIBRARY}
         )
+
+# tests
+if($ENV{TEST_QUARTET})
+    message("Generating tests")
+    add_subdirectory(test)
+elseif(${TEST_QUARTET})
+    message("Generating tests")
+    add_subdirectory(test)
+else()
+    message("Building without tests")
+endif()
