@@ -8,6 +8,8 @@
 #include <cstdio>
 #include <cstring>
 #include <ctime>
+#include <openvdb/openvdb.h>
+#include <openvdb/tools/MeshToVolume.h>
 
 int
 main(int argc,
@@ -142,11 +144,6 @@ main(int argc,
     return 1;
   }
 
-
-  //
-  // Run quartet mesh generation
-  //
-
   // Get a surface mesh
   std::vector<Vec3i> surf_tri;
   std::vector<Vec3f> surf_x;
@@ -167,16 +164,12 @@ main(int argc,
     return 4;
   }
 
-  // Find bounding box
+
+
   Vec3f xmin = surf_x[0], xmax = surf_x[0];
+  // Find bounding box
   for (size_t i = 1; i < surf_x.size(); ++i)
     update_minmax(surf_x[i], xmin, xmax);
-
-  // Build triangle mesh data structure
-  TriMesh trimesh(surf_x, surf_tri);
-
-
-  // Make the level set
 
   // Determining dimensions of voxel grid.
   // Round up to ensure voxel grid completely contains bounding box.
@@ -189,10 +182,32 @@ main(int argc,
       nj = (int) std::ceil((xmax[1] - xmin[1]) / dx) + 5,
       nk = (int) std::ceil((xmax[2] - xmin[2]) / dx) + 5;
 
+  // Build triangle mesh data structure
+  TriMesh trimesh(surf_x, surf_tri);
+
+  // Initialize the OpenVDB library.  This must be called at least
+  // once per program and may safely be called multiple times.
+  openvdb::initialize();
+
+  // Create an empty floating-point grid with background value 0.
+  openvdb::FloatGrid::Ptr grid = openvdb::FloatGrid::create();
+  std::cout << "Testing random access:" << std::endl;
+  openvdb::math::Transform xform;
+  xform.preScale(1);
+
+  std::cout << surf_tri.size() << std:: endl;
+  std::vector<openvdb::Vec3I> tri;
+  tri.reserve(surf_tri.size());
+  for(auto face: surf_tri){
+        tri.emplace_back(face.v);
+  }
+
+  openvdb::tools::QuadAndTriangleDataAdapter<Vec3f, openvdb::Vec3I> oMesh(surf_x, tri);
+  openvdb::FloatGrid::Ptr mGrid = openvdb::tools::meshToVolume<openvdb::FloatGrid>(oMesh, xform, static_cast<float>(3), static_cast<float>(3), 0, NULL);
+  
   SDF sdf(origin, dx, ni, nj, nk); // Initialize signed distance field.
   std::printf("making %dx%dx%d level set\n", ni, nj, nk);
   make_signed_distance(surf_tri, surf_x, sdf);
-
 
   // Then the tet mesh
   TetMesh mesh;

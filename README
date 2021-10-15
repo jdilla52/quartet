@@ -1,7 +1,9 @@
 Quartet
 *******
 
-A tetrahedral mesh generator based on Jonathon Shewchuk's isosurface stuffing 
+This is meant to accelerate quartet for use in generating high density tet meshes for fea.
+
+A tetrahedral mesh generator based on Jonathon Shewchuk's isosurface stuffing
 algorithm in combination with the A15 acute tetrahedral tile.
 
 written by:
