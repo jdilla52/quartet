@@ -4,6 +4,7 @@
 #include "read_obj.h"
 #include "geometry_queries.h"
 #include "vec.h"
+#include "writeUgrid.h"
 #include <map>
 #include <set>
 #include <cfloat>
@@ -433,6 +434,8 @@ make_tet_mesh(TetMesh& mesh,
         mesh.writeToFile(cutLatticeFile);
         mesh.writeInfoToFile(cutLatticeInfo);
         std::cout << "Mesh written to " << cutLatticeFile << std::endl;
+
+      TetMeshUGridWriter(mesh, "curGrid.ugrid");
     }
 
     // Warp any vertices close enough to phi=0 to fix sign crossings.

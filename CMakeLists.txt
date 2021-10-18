@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-
-PROJECT(Quartet)
+set(CMAKE_CXX_STANDARD 17)
+project(Quartet LANGUAGES CXX)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -DNDEBUG -Wall -funroll-loops")
 
@@ -15,7 +15,8 @@ SET(SRC_FILES src/predicates.cpp
               src/match_features.cpp
               src/optimize_tet_mesh.cpp
               src/make_signed_distance.cpp
-              src/make_tet_mesh.cpp)
+              src/make_tet_mesh.cpp
+        src/writeUgrid.h)
 
 ADD_LIBRARY(quartet ${SRC_FILES})
 if(UNIX)
@@ -35,6 +36,7 @@ INSTALL(TARGETS quartet quartet_bin
 INSTALL(FILES
     src/array3.h
     src/feature.h
+    src/writeUgrid.h
     src/geometry_queries.h
     src/gluvi.h
     src/make_signed_distance.h
